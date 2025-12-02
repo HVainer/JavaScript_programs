@@ -1,30 +1,24 @@
 
-//load the prompt-sync module
-//const prompt = require('prompt-sync')({sigint: true});
 
-
-// console.log("Welcome to Rock, Paper, Scissor!\n");
-// playGame();
 let humanScore = 0;
 let computerScore = 0;
 
+//keeping reference of buttons and div where winner will be displayed
 const rock = document.querySelector("#rock");
 const paper = document.querySelector("#paper");
 const scissors = document.querySelector("#scissors");
 const div = document.querySelector("div");
 
-if(humanScore < 5 && computerScore < 5)
-{
-    //add event listener for the 3 buttons - calls playRound() when clicked
-    rock.addEventListener("click", () => playRound(getComputerChoice(),"rock"));
-    paper.addEventListener("click", () => playRound(getComputerChoice(),"paper"));
-    scissors.addEventListener("click", () => playRound(getComputerChoice(),"scissors"));
-}
 
-else
-{
-    displayWinner();
-}
+
+//add event listener for the 3 buttons - calls playRound() when clicked
+//each click will play a round
+//the event listener's callback func has arguments, so it has to be wrapped or it will run immediately
+
+rock.addEventListener("click", () => playRound(getComputerChoice(),"rock"));
+paper.addEventListener("click", () => playRound(getComputerChoice(),"paper"));
+scissors.addEventListener("click", () => playRound(getComputerChoice(),"scissors"));
+
 
 
 function getComputerChoice()
@@ -47,12 +41,7 @@ function getComputerChoice()
     }
 }
 
-function getHumanChoice()
-{
-    let userChoice = prompt("Enter rock, paper, or scissors: ");
-    userChoice = userChoice.toLowerCase();
-    return userChoice;
-}
+
 
 function playRound(compChoice, humChoice)
 {
@@ -60,111 +49,72 @@ function playRound(compChoice, humChoice)
     if( compChoice === humChoice)
     {
         const tiePara = document.createElement("p"); //create a new <p>
-        tiePara.textContent("It is a tie!"); //add text to the <p>
+        tiePara.textContent = "It is a tie!"; //add text to the <p>
 
         div.appendChild(tiePara); //append the <p> to the <div>
         
     }
 
+    //human wins round
     else if((humChoice === "rock" && compChoice === "scissors") ||  (humChoice === "paper" && compChoice === "rock") ||
     (humChoice === "scissors" && compChoice === "paper"))
     {
         const humanWin = document.createElement("p"); //create a new <p>
-        humanWin.textContent(`\nYou win! ${humChoice} beats ${compChoice}.
-            `);
+        humanWin.textContent = `You win! ${humChoice} beats ${compChoice}.`;
         div.appendChild(humanWin);
-        humanScore++; //keep track of human score
+        humanScore++; //keep track of score
     }
 
+    //computer wins round
     else
     {
         const compWin = document.createElement("p");
-        compWin.textContent(`\nYou lose! ${compChoice} beats ${humChoice}.
-            `);
+        compWin.textContent = `You lose! ${compChoice} beats ${humChoice}.`;
         div.appendChild(compWin);
-         computerScore++;    
+         computerScore++;  //keep track of score  
     }
+
+    //will check the score at each round to see if any player has reached 5 points, yet
+    checkWinner(); 
+
 }
 
-function displayWinner()
+function checkWinner()
 {
-    const winner = document.createElement("h1");
+    const winner = document.createElement("h1"); //create the h1 to display the winner
 
-     //comparing scores to see who won and showing the score
-    if (humanScore > computerScore)
+     //checking if any player's score has reached 5
+    if (humanScore === 5) 
     {
-        winner.textContent(`
-            You won the game!
-            You: ${humanScore}
-            Computer: ${computerScore}`);
+        winner.textContent = `You won the game!
+        You: ${humanScore}
+        Computer: ${computerScore}`;
         
         div.appendChild(winner);
+
+        disableButtons() //buttons will disable once there is a winner of the game
         
     }
 
-    else if (computerScore > humanScore)
+    else if (computerScore === 5)
     {
-        winner.textContent(`
-            You lost the game!
-            You: ${humanScore}
-            Computer: ${computerScore}`);
+        winner.textContent = `You lost the game!
+        You: ${humanScore}
+        Computer: ${computerScore}`;
 
         div.appendChild(winner);
+
+        disableButtons() //buttons will disable once there is a winner of the game
     }
 
-    else if (humanScore === computerScore)
-    {
-        winner.textContent(`
-            You tied the game!
-            You: ${humanScore}
-            Computer: ${computerScore}`);
-
-        div.appendChild(winner);
-    }
 }
 
-// function playGame(human)
-// {
-//      let humanScore = 0;
-//      let computerScore = 0;
+function disableButtons()
+{
+    rock.disabled = true;
+    paper.disabled = true;
+    scissors.disabled = true;
+}
 
 
-//     let winner = playRound(getComputerChoice(), human);
 
-//     if (winner === "human")
-//     {
-//          humanScore++;
-//     }
-
-//     else if (winner === "computer")
-//     {
-//         computerScore++;
-//     }
-    
-
-//     //comparing scores to see who won and showing the score
-//     if (humanScore > computerScore)
-//     {
-//         console.log(`
-//             You won the game!
-//             You: ${humanScore}
-//             Computer: ${computerScore}`);
-        
-//     }
-
-//     else if (computerScore > humanScore)
-//     {
-//         console.log(`
-//             You lost the game!
-//             You: ${humanScore}
-//             Computer: ${computerScore}`);
-//     }
-
-//     else if (humanScore === computerScore)
-//     {
-//         console.log(`
-//             You tied the game!
-//             You: ${humanScore}
-//             Computer: ${computerScore}`);
-//     }
-// }
