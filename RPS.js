@@ -13,7 +13,7 @@ const paper = document.querySelector("#paper");
 const scissors = document.querySelector("#scissors");
 const div = document.querySelector("div");
 
-while(humanScore !== 5 && computerScore !== 5)
+if(humanScore < 5 && computerScore < 5)
 {
     //add event listener for the 3 buttons - calls playRound() when clicked
     rock.addEventListener("click", () => playRound(getComputerChoice(),"rock"));
@@ -21,8 +21,10 @@ while(humanScore !== 5 && computerScore !== 5)
     scissors.addEventListener("click", () => playRound(getComputerChoice(),"scissors"));
 }
 
-
-
+else
+{
+    displayWinner();
+}
 
 
 function getComputerChoice()
@@ -84,48 +86,85 @@ function playRound(compChoice, humChoice)
     }
 }
 
-function playGame(human)
+function displayWinner()
 {
-     let humanScore = 0;
-     let computerScore = 0;
+    const winner = document.createElement("h1");
 
-
-    let winner = playRound(getComputerChoice(), human);
-
-    if (winner === "human")
-    {
-         humanScore++;
-    }
-
-    else if (winner === "computer")
-    {
-        computerScore++;
-    }
-    
-
-    //comparing scores to see who won and showing the score
+     //comparing scores to see who won and showing the score
     if (humanScore > computerScore)
     {
-        console.log(`
+        winner.textContent(`
             You won the game!
             You: ${humanScore}
             Computer: ${computerScore}`);
+        
+        div.appendChild(winner);
         
     }
 
     else if (computerScore > humanScore)
     {
-        console.log(`
+        winner.textContent(`
             You lost the game!
             You: ${humanScore}
             Computer: ${computerScore}`);
+
+        div.appendChild(winner);
     }
 
     else if (humanScore === computerScore)
     {
-        console.log(`
+        winner.textContent(`
             You tied the game!
             You: ${humanScore}
             Computer: ${computerScore}`);
+
+        div.appendChild(winner);
     }
 }
+
+// function playGame(human)
+// {
+//      let humanScore = 0;
+//      let computerScore = 0;
+
+
+//     let winner = playRound(getComputerChoice(), human);
+
+//     if (winner === "human")
+//     {
+//          humanScore++;
+//     }
+
+//     else if (winner === "computer")
+//     {
+//         computerScore++;
+//     }
+    
+
+//     //comparing scores to see who won and showing the score
+//     if (humanScore > computerScore)
+//     {
+//         console.log(`
+//             You won the game!
+//             You: ${humanScore}
+//             Computer: ${computerScore}`);
+        
+//     }
+
+//     else if (computerScore > humanScore)
+//     {
+//         console.log(`
+//             You lost the game!
+//             You: ${humanScore}
+//             Computer: ${computerScore}`);
+//     }
+
+//     else if (humanScore === computerScore)
+//     {
+//         console.log(`
+//             You tied the game!
+//             You: ${humanScore}
+//             Computer: ${computerScore}`);
+//     }
+// }
