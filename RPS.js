@@ -1,10 +1,27 @@
 
 //load the prompt-sync module
-const prompt = require('prompt-sync')({sigint: true});
+//const prompt = require('prompt-sync')({sigint: true});
 
 
-console.log("Welcome to Rock, Paper, Scissor!\n");
-playGame();
+// console.log("Welcome to Rock, Paper, Scissor!\n");
+// playGame();
+let humanScore = 0;
+let computerScore = 0;
+
+const rock = document.querySelector("#rock");
+const paper = document.querySelector("#paper");
+const scissors = document.querySelector("#scissors");
+const div = document.querySelector("div");
+
+while(humanScore !== 5 && computerScore !== 5)
+{
+    //add event listener for the 3 buttons - calls playRound() when clicked
+    rock.addEventListener("click", () => playRound(getComputerChoice(),"rock"));
+    paper.addEventListener("click", () => playRound(getComputerChoice(),"paper"));
+    scissors.addEventListener("click", () => playRound(getComputerChoice(),"scissors"));
+}
+
+
 
 
 
@@ -40,47 +57,51 @@ function playRound(compChoice, humChoice)
 
     if( compChoice === humChoice)
     {
-        console.log(`\nIt is a tie!`
-        );
-        return 'tie';
+        const tiePara = document.createElement("p"); //create a new <p>
+        tiePara.textContent("It is a tie!"); //add text to the <p>
+
+        div.appendChild(tiePara); //append the <p> to the <div>
+        
     }
 
-    else if((humChoice === "rock" && compChoice === "scissors") ||       (humChoice === "paper" && compChoice === "rock") ||
+    else if((humChoice === "rock" && compChoice === "scissors") ||  (humChoice === "paper" && compChoice === "rock") ||
     (humChoice === "scissors" && compChoice === "paper"))
     {
-        console.log(`\nYou win! ${humChoice} beats ${compChoice}.
+        const humanWin = document.createElement("p"); //create a new <p>
+        humanWin.textContent(`\nYou win! ${humChoice} beats ${compChoice}.
             `);
-        return 'human';
+        div.appendChild(humanWin);
+        humanScore++; //keep track of human score
     }
 
     else
     {
-        console.log(`\nYou lose! ${compChoice} beats ${humChoice}.
+        const compWin = document.createElement("p");
+        compWin.textContent(`\nYou lose! ${compChoice} beats ${humChoice}.
             `);
-        return 'computer';    
+        div.appendChild(compWin);
+         computerScore++;    
     }
 }
 
-function playGame()
+function playGame(human)
 {
-    let humanScore = 0;
-    let computerScore = 0;
+     let humanScore = 0;
+     let computerScore = 0;
 
-    //will play 5 rounds
-    for(let index = 0; index < 5; index++)
+
+    let winner = playRound(getComputerChoice(), human);
+
+    if (winner === "human")
     {
-        let winner = playRound(getComputerChoice(), getHumanChoice());
-
-        if (winner === "human")
-        {
-            humanScore++;
-        }
-
-        else if (winner === "computer")
-        {
-            computerScore++;
-        }
+         humanScore++;
     }
+
+    else if (winner === "computer")
+    {
+        computerScore++;
+    }
+    
 
     //comparing scores to see who won and showing the score
     if (humanScore > computerScore)
@@ -107,3 +128,4 @@ function playGame()
             You: ${humanScore}
             Computer: ${computerScore}`);
     }
+}
